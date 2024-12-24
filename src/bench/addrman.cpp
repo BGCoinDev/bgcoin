@@ -110,7 +110,7 @@ static void AddrManSelectFromAlmostEmpty(benchmark::Bench& bench)
     AddrMan addrman{EMPTY_NETGROUPMAN, /*deterministic=*/false, ADDRMAN_CONSISTENCY_CHECK_RATIO};
 
     // Add one address to the new table
-    CService addr = Lookup("38.242.200.217", 11965, false).value();
+    CService addr = Lookup("38.242.200.217", 11865, false).value();
     addrman.Add({CAddress(addr, NODE_NONE)}, addr);
 
     bench.run([&] {

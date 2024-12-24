@@ -62,13 +62,13 @@ $ bpftrace contrib/tracing/log_p2p_traffic.bt
 
 Output
 ```
-outbound 'ping' msg to peer 11 (outbound-full-relay, [2a02:b10c:f747:1:ef:fake:ipv6:addr]:11965) with 8 bytes
-inbound 'pong' msg from peer 11 (outbound-full-relay, [2a02:b10c:f747:1:ef:fake:ipv6:addr]:11965) with 8 bytes
-inbound 'inv' msg from peer 16 (outbound-full-relay, XX.XX.XXX.121:11965) with 37 bytes
-outbound 'getdata' msg to peer 16 (outbound-full-relay, XX.XX.XXX.121:11965) with 37 bytes
-inbound 'tx' msg from peer 16 (outbound-full-relay, XX.XX.XXX.121:11965) with 222 bytes
-outbound 'inv' msg to peer 9 (outbound-full-relay, faketorv3addressa2ufa6odvoi3s77j4uegey0xb10csyfyve2t33curbyd.onion:11965) with 37 bytes
-outbound 'inv' msg to peer 7 (outbound-full-relay, XX.XX.XXX.242:11965) with 37 bytes
+outbound 'ping' msg to peer 11 (outbound-full-relay, [2a02:b10c:f747:1:ef:fake:ipv6:addr]:11865) with 8 bytes
+inbound 'pong' msg from peer 11 (outbound-full-relay, [2a02:b10c:f747:1:ef:fake:ipv6:addr]:11865) with 8 bytes
+inbound 'inv' msg from peer 16 (outbound-full-relay, XX.XX.XXX.121:11865) with 37 bytes
+outbound 'getdata' msg to peer 16 (outbound-full-relay, XX.XX.XXX.121:11865) with 37 bytes
+inbound 'tx' msg from peer 16 (outbound-full-relay, XX.XX.XXX.121:11865) with 222 bytes
+outbound 'inv' msg to peer 9 (outbound-full-relay, faketorv3addressa2ufa6odvoi3s77j4uegey0xb10csyfyve2t33curbyd.onion:11865) with 37 bytes
+outbound 'inv' msg to peer 7 (outbound-full-relay, XX.XX.XXX.242:11865) with 37 bytes
 …
 ```
 
@@ -91,16 +91,16 @@ Lists selectable peers and traffic and connection information.
  Navigate with UP/DOWN or J/K and select a peer with ENTER or SPACE to see individual P2P messages
 
  PEER  OUTBOUND              INBOUND               TYPE                   ADDR
-    0  46          398 byte  61      1407590 byte  block-relay-only       XX.XX.XXX.196:11965
-   11  1156     253570 byte  3431    2394924 byte  outbound-full-relay    XXX.X.XX.179:11965
+    0  46          398 byte  61      1407590 byte  block-relay-only       XX.XX.XXX.196:11865
+   11  1156     253570 byte  3431    2394924 byte  outbound-full-relay    XXX.X.XX.179:11865
    13  3425    1809620 byte  1236     305458 byte  inbound                XXX.X.X.X:60380
-   16  1046     241633 byte  1589    1199220 byte  outbound-full-relay    4faketorv2pbfu7x.onion:11965
-   19  577      181679 byte  390      148951 byte  outbound-full-relay    kfake4vctorjv2o2.onion:11965
-   20  11         1248 byte  13         1283 byte  block-relay-only       [2600:fake:64d9:b10c:4436:aaaa:fe:bb]:11965
-   21  11         1248 byte  13         1299 byte  block-relay-only       XX.XXX.X.155:11965
-   22  5           103 byte  1           102 byte  feeler                 XX.XX.XXX.173:11965
-   23  11         1248 byte  12         1255 byte  block-relay-only       XX.XXX.XXX.220:11965
-   24  3           103 byte  1           102 byte  feeler                 XXX.XXX.XXX.64:11965
+   16  1046     241633 byte  1589    1199220 byte  outbound-full-relay    4faketorv2pbfu7x.onion:11865
+   19  577      181679 byte  390      148951 byte  outbound-full-relay    kfake4vctorjv2o2.onion:11865
+   20  11         1248 byte  13         1283 byte  block-relay-only       [2600:fake:64d9:b10c:4436:aaaa:fe:bb]:11865
+   21  11         1248 byte  13         1299 byte  block-relay-only       XX.XXX.X.155:11865
+   22  5           103 byte  1           102 byte  feeler                 XX.XX.XXX.173:11865
+   23  11         1248 byte  12         1255 byte  block-relay-only       XX.XXX.XXX.220:11865
+   24  3           103 byte  1           102 byte  feeler                 XXX.XXX.XXX.64:11865
 …
 ```
 
@@ -108,7 +108,7 @@ Showing recent P2P messages between our node and a selected peer.
 
 ```
     ----------------------------------------------------------------------
-    |                PEER 16 (4faketorv2pbfu7x.onion:11965)               |
+    |                PEER 16 (4faketorv2pbfu7x.onion:11865)               |
     | OUR NODE                outbound-full-relay                   PEER |
     |                                           <--- sendcmpct (9 bytes) |
     | inv (37 byte) --->                                                 |
@@ -157,9 +157,9 @@ $ python3 contrib/tracing/log_raw_p2p_msgs.py ./build/src/bgcoind
 Logging raw P2P messages.
 Messages larger that about 32kb will be cut off!
 Some messages might be lost!
- outbound msg 'inv' from peer 4 (outbound-full-relay, XX.XXX.XX.4:11965) with 253 bytes: 0705000000be2245c8f844c9f763748e1a7…
+ outbound msg 'inv' from peer 4 (outbound-full-relay, XX.XXX.XX.4:11865) with 253 bytes: 0705000000be2245c8f844c9f763748e1a7…
 …
-Warning: incomplete message (only 32568 out of 53552 bytes)! inbound msg 'tx' from peer 32 (outbound-full-relay, XX.XXX.XXX.43:11965) with 53552 bytes: 020000000001fd3c01939c85ad6756ed9fc…
+Warning: incomplete message (only 32568 out of 53552 bytes)! inbound msg 'tx' from peer 32 (outbound-full-relay, XX.XXX.XXX.43:11865) with 53552 bytes: 020000000001fd3c01939c85ad6756ed9fc…
 …
 Possibly lost 2 samples
 ```

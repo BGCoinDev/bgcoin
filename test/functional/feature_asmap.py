@@ -46,7 +46,7 @@ class AsmapTest(BitcoinTestFramework):
     def fill_addrman(self, node_id):
         """Add 2 tried addresses to the addrman, followed by 2 new addresses."""
         for addr, tried in [[0, True], [1, True], [2, False], [3, False]]:
-            self.nodes[node_id].addpeeraddress(address=f"101.{addr}.0.0", tried=tried, port=11965)
+            self.nodes[node_id].addpeeraddress(address=f"101.{addr}.0.0", tried=tried, port=11865)
 
     def test_without_asmap_arg(self):
         self.log.info('Test bgcoind with no -asmap arg passed')

@@ -179,14 +179,14 @@ class ProxyTest(BitcoinTestFramework):
             self.network_test(node, addr, network=NET_IPV6)
 
         if test_onion:
-            addr = "pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion:11965"
+            addr = "pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion:11865"
             self.log.debug(f"Test: outgoing onion connection through node {node.index} for address {addr}")
             node.addnode(addr, "onetry", v2transport=False)
             cmd = proxies[2].queue.get()
             assert isinstance(cmd, Socks5Command)
             assert_equal(cmd.atyp, AddressType.DOMAINNAME)
             assert_equal(cmd.addr, b"pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion")
-            assert_equal(cmd.port, 11965)
+            assert_equal(cmd.port, 11865)
             if not auth:
                 assert_equal(cmd.username, None)
                 assert_equal(cmd.password, None)
@@ -208,14 +208,14 @@ class ProxyTest(BitcoinTestFramework):
             rv.append(cmd)
             self.network_test(node, addr, network=NET_CJDNS)
 
-        addr = "node.noumenon:11965"
+        addr = "node.noumenon:11865"
         self.log.debug(f"Test: outgoing DNS name connection through node {node.index} for address {addr}")
         node.addnode(addr, "onetry", v2transport=False)
         cmd = proxies[3].queue.get()
         assert isinstance(cmd, Socks5Command)
         assert_equal(cmd.atyp, AddressType.DOMAINNAME)
         assert_equal(cmd.addr, b"node.noumenon")
-        assert_equal(cmd.port, 11965)
+        assert_equal(cmd.port, 11865)
         if not auth:
             assert_equal(cmd.username, None)
             assert_equal(cmd.password, None)

@@ -53,8 +53,8 @@ class AddrReceiver(P2PInterface):
                 # relay_tests checks the content of the addr messages match
                 # expectations based on the message creation in setup_addr_msg
                 assert_equal(addr.nServices, 9)
-                if not 11965 <= addr.port < 8343:
-                    raise AssertionError("Invalid addr.port of {} (11965-8342 expected)".format(addr.port))
+                if not 11865 <= addr.port < 8343:
+                    raise AssertionError("Invalid addr.port of {} (11865-8342 expected)".format(addr.port))
                 assert addr.ip.startswith('123.123.')
 
     def on_getaddr(self, message):
@@ -118,7 +118,7 @@ class AddrTest(BitcoinTestFramework):
                 self.counter += 1
             else:
                 addr.ip = f"{random.randrange(128,169)}.{random.randrange(1,255)}.{random.randrange(1,255)}.{random.randrange(1,255)}"
-            addr.port = 11965 + i
+            addr.port = 11865 + i
             addrs.append(addr)
 
         msg = msg_addr()
@@ -287,7 +287,7 @@ class AddrTest(BitcoinTestFramework):
             first_octet = i >> 8
             second_octet = i % 256
             a = f"{first_octet}.{second_octet}.1.1"
-            self.nodes[0].addpeeraddress(a, 11965)
+            self.nodes[0].addpeeraddress(a, 11865)
 
         full_outbound_peer.send_and_ping(msg_getaddr())
         block_relay_peer.send_and_ping(msg_getaddr())

@@ -75,15 +75,15 @@ BOOST_AUTO_TEST_CASE(addrman_simple)
     BOOST_CHECK_EQUAL(addr_null.ToStringAddrPort(), "[::]:0");
 
     // Test: Does Addrman::Add work as expected.
-    CService addr1 = ResolveService("250.1.1.1", 11965);
+    CService addr1 = ResolveService("250.1.1.1", 11865);
     BOOST_CHECK(addrman->Add({CAddress(addr1, NODE_NONE)}, source));
     BOOST_CHECK_EQUAL(addrman->Size(), 1U);
     auto addr_ret1 = addrman->Select().first;
-    BOOST_CHECK_EQUAL(addr_ret1.ToStringAddrPort(), "250.1.1.1:11965");
+    BOOST_CHECK_EQUAL(addr_ret1.ToStringAddrPort(), "250.1.1.1:11865");
 
     // Test: Does IP address deduplication work correctly.
     //  Expected dup IP should not be added.
-    CService addr1_dup = ResolveService("250.1.1.1", 11965);
+    CService addr1_dup = ResolveService("250.1.1.1", 11865);
     BOOST_CHECK(!addrman->Add({CAddress(addr1_dup, NODE_NONE)}, source));
     BOOST_CHECK_EQUAL(addrman->Size(), 1U);
 
@@ -94,15 +94,15 @@ BOOST_AUTO_TEST_CASE(addrman_simple)
     // hash collisions may occur. But we can always be sure of at least one
     // success.
 
-    CService addr2 = ResolveService("250.1.1.2", 11965);
+    CService addr2 = ResolveService("250.1.1.2", 11865);
     BOOST_CHECK(addrman->Add({CAddress(addr2, NODE_NONE)}, source));
     BOOST_CHECK(addrman->Size() >= 1);
 
     // Test: reset addrman and test AddrMan::Add multiple addresses works as expected
     addrman = std::make_unique<AddrMan>(EMPTY_NETGROUPMAN, DETERMINISTIC, GetCheckRatio(m_node));
     std::vector<CAddress> vAddr;
-    vAddr.emplace_back(ResolveService("250.1.1.3", 11965), NODE_NONE);
-    vAddr.emplace_back(ResolveService("250.1.1.4", 11965), NODE_NONE);
+    vAddr.emplace_back(ResolveService("250.1.1.3", 11865), NODE_NONE);
+    vAddr.emplace_back(ResolveService("250.1.1.4", 11865), NODE_NONE);
     BOOST_CHECK(addrman->Add(vAddr, source));
     BOOST_CHECK(addrman->Size() >= 1);
 }
@@ -116,7 +116,7 @@ BOOST_AUTO_TEST_CASE(addrman_ports)
     BOOST_CHECK_EQUAL(addrman->Size(), 0U);
 
     // Test 7; Addr with same IP but diff port does not replace existing addr.
-    CService addr1 = ResolveService("250.1.1.1", 11965);
+    CService addr1 = ResolveService("250.1.1.1", 11865);
     BOOST_CHECK(addrman->Add({CAddress(addr1, NODE_NONE)}, source));
     BOOST_CHECK_EQUAL(addrman->Size(), 1U);
 
@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_CASE(addrman_ports)
     BOOST_CHECK(addrman->Add({CAddress(addr1_port, NODE_NONE)}, source));
     BOOST_CHECK_EQUAL(addrman->Size(), 2U);
     auto addr_ret2 = addrman->Select().first;
-    BOOST_CHECK(addr_ret2.ToStringAddrPort() == "250.1.1.1:11965" || addr_ret2.ToStringAddrPort() == "250.1.1.1:8334");
+    BOOST_CHECK(addr_ret2.ToStringAddrPort() == "250.1.1.1:11865" || addr_ret2.ToStringAddrPort() == "250.1.1.1:8334");
 
     // Test: Add same IP but diff port to tried table; this converts the entry with
     // the specified port to tried, but not the other.
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE(addrman_ports)
     BOOST_CHECK_EQUAL(addrman->Size(), 2U);
     bool new_only = true;
     auto addr_ret3 = addrman->Select(new_only).first;
-    BOOST_CHECK_EQUAL(addr_ret3.ToStringAddrPort(), "250.1.1.1:11965");
+    BOOST_CHECK_EQUAL(addr_ret3.ToStringAddrPort(), "250.1.1.1:11865");
 }
 
 BOOST_AUTO_TEST_CASE(addrman_select)
@@ -144,7 +144,7 @@ BOOST_AUTO_TEST_CASE(addrman_select)
     CNetAddr source = ResolveIP("252.2.2.2");
 
     // Add 1 address to the new table
-    CService addr1 = ResolveService("250.1.1.1", 11965);
+    CService addr1 = ResolveService("250.1.1.1", 11865);
     BOOST_CHECK(addrman->Add({CAddress(addr1, NODE_NONE)}, source));
     BOOST_CHECK_EQUAL(addrman->Size(), 1U);
 
@@ -160,7 +160,7 @@ BOOST_AUTO_TEST_CASE(addrman_select)
     BOOST_CHECK_EQUAL(addrman->Size(), 1U);
 
     // Add one address to the new table
-    CService addr2 = ResolveService("250.3.1.1", 11965);
+    CService addr2 = ResolveService("250.3.1.1", 11865);
     BOOST_CHECK(addrman->Add({CAddress(addr2, NODE_NONE)}, addr2));
     BOOST_CHECK(addrman->Select(/*new_only=*/true).first == addr2);
 
@@ -169,18 +169,18 @@ BOOST_AUTO_TEST_CASE(addrman_select)
     CService addr4 = ResolveService("250.3.3.3", 9999);
 
     BOOST_CHECK(addrman->Add({CAddress(addr3, NODE_NONE)}, addr2));
-    BOOST_CHECK(addrman->Add({CAddress(addr4, NODE_NONE)}, ResolveService("250.4.1.1", 11965)));
+    BOOST_CHECK(addrman->Add({CAddress(addr4, NODE_NONE)}, ResolveService("250.4.1.1", 11865)));
 
     // Add three addresses to tried table.
-    CService addr5 = ResolveService("250.4.4.4", 11965);
+    CService addr5 = ResolveService("250.4.4.4", 11865);
     CService addr6 = ResolveService("250.4.5.5", 7777);
-    CService addr7 = ResolveService("250.4.6.6", 11965);
+    CService addr7 = ResolveService("250.4.6.6", 11865);
 
     BOOST_CHECK(addrman->Add({CAddress(addr5, NODE_NONE)}, addr3));
     BOOST_CHECK(addrman->Good(CAddress(addr5, NODE_NONE)));
     BOOST_CHECK(addrman->Add({CAddress(addr6, NODE_NONE)}, addr3));
     BOOST_CHECK(addrman->Good(CAddress(addr6, NODE_NONE)));
-    BOOST_CHECK(addrman->Add({CAddress(addr7, NODE_NONE)}, ResolveService("250.1.1.3", 11965)));
+    BOOST_CHECK(addrman->Add({CAddress(addr7, NODE_NONE)}, ResolveService("250.1.1.3", 11865)));
     BOOST_CHECK(addrman->Good(CAddress(addr7, NODE_NONE)));
 
     // 6 addrs + 1 addr from last test = 7.
@@ -202,7 +202,7 @@ BOOST_AUTO_TEST_CASE(addrman_select_by_network)
 
     // add ipv4 address to the new table
     CNetAddr source = ResolveIP("252.2.2.2");
-    CService addr1 = ResolveService("250.1.1.1", 11965);
+    CService addr1 = ResolveService("250.1.1.1", 11865);
     BOOST_CHECK(addrman->Add({CAddress(addr1, NODE_NONE)}, source));
 
     BOOST_CHECK(addrman->Select(/*new_only=*/true, {NET_IPV4}).first == addr1);
@@ -276,7 +276,7 @@ BOOST_AUTO_TEST_CASE(addrman_select_special)
     BOOST_CHECK(addrman->Good(i2p_addr));
 
     // add ipv4 address to the new table
-    CService addr1 = ResolveService("250.1.1.3", 11965);
+    CService addr1 = ResolveService("250.1.1.3", 11865);
     BOOST_CHECK(addrman->Add({CAddress(addr1, NODE_NONE)}, source));
 
     // since the only ipv4 address is on the new table, ensure that the new
@@ -317,7 +317,7 @@ BOOST_AUTO_TEST_CASE(addrman_new_collisions)
 BOOST_AUTO_TEST_CASE(addrman_new_multiplicity)
 {
     auto addrman = std::make_unique<AddrMan>(EMPTY_NETGROUPMAN, DETERMINISTIC, GetCheckRatio(m_node));
-    CAddress addr{CAddress(ResolveService("253.3.3.3", 11965), NODE_NONE)};
+    CAddress addr{CAddress(ResolveService("253.3.3.3", 11865), NODE_NONE)};
     const auto start_time{Now<NodeSeconds>()};
     addr.nTime = start_time;
 
@@ -387,15 +387,15 @@ BOOST_AUTO_TEST_CASE(addrman_getaddr)
     std::vector<CAddress> vAddr1 = addrman->GetAddr(/*max_addresses=*/0, /*max_pct=*/0, /*network=*/std::nullopt);
     BOOST_CHECK_EQUAL(vAddr1.size(), 0U);
 
-    CAddress addr1 = CAddress(ResolveService("250.250.2.1", 11965), NODE_NONE);
+    CAddress addr1 = CAddress(ResolveService("250.250.2.1", 11865), NODE_NONE);
     addr1.nTime = Now<NodeSeconds>(); // Set time so isTerrible = false
     CAddress addr2 = CAddress(ResolveService("250.251.2.2", 9999), NODE_NONE);
     addr2.nTime = Now<NodeSeconds>();
-    CAddress addr3 = CAddress(ResolveService("251.252.2.3", 11965), NODE_NONE);
+    CAddress addr3 = CAddress(ResolveService("251.252.2.3", 11865), NODE_NONE);
     addr3.nTime = Now<NodeSeconds>();
-    CAddress addr4 = CAddress(ResolveService("252.253.3.4", 11965), NODE_NONE);
+    CAddress addr4 = CAddress(ResolveService("252.253.3.4", 11865), NODE_NONE);
     addr4.nTime = Now<NodeSeconds>();
-    CAddress addr5 = CAddress(ResolveService("252.254.4.5", 11965), NODE_NONE);
+    CAddress addr5 = CAddress(ResolveService("252.254.4.5", 11865), NODE_NONE);
     addr5.nTime = Now<NodeSeconds>();
     CNetAddr source1 = ResolveIP("250.1.2.1");
     CNetAddr source2 = ResolveIP("250.2.3.3");
@@ -441,7 +441,7 @@ BOOST_AUTO_TEST_CASE(getaddr_unfiltered)
     auto addrman = std::make_unique<AddrMan>(EMPTY_NETGROUPMAN, DETERMINISTIC, GetCheckRatio(m_node));
 
     // Set time on this addr so isTerrible = false
-    CAddress addr1 = CAddress(ResolveService("250.250.2.1", 11965), NODE_NONE);
+    CAddress addr1 = CAddress(ResolveService("250.250.2.1", 11865), NODE_NONE);
     addr1.nTime = Now<NodeSeconds>();
     // Not setting time so this addr should be isTerrible = true
     CAddress addr2 = CAddress(ResolveService("250.251.2.2", 9999), NODE_NONE);
@@ -457,7 +457,7 @@ BOOST_AUTO_TEST_CASE(getaddr_unfiltered)
 
 BOOST_AUTO_TEST_CASE(caddrinfo_get_tried_bucket_legacy)
 {
-    CAddress addr1 = CAddress(ResolveService("250.1.1.1", 11965), NODE_NONE);
+    CAddress addr1 = CAddress(ResolveService("250.1.1.1", 11865), NODE_NONE);
     CAddress addr2 = CAddress(ResolveService("250.1.1.1", 9999), NODE_NONE);
 
     CNetAddr source1 = ResolveIP("250.1.1.1");
@@ -508,7 +508,7 @@ BOOST_AUTO_TEST_CASE(caddrinfo_get_tried_bucket_legacy)
 
 BOOST_AUTO_TEST_CASE(caddrinfo_get_new_bucket_legacy)
 {
-    CAddress addr1 = CAddress(ResolveService("250.1.2.1", 11965), NODE_NONE);
+    CAddress addr1 = CAddress(ResolveService("250.1.2.1", 11865), NODE_NONE);
     CAddress addr2 = CAddress(ResolveService("250.1.2.1", 9999), NODE_NONE);
 
     CNetAddr source1 = ResolveIP("250.1.2.1");
@@ -585,7 +585,7 @@ BOOST_AUTO_TEST_CASE(caddrinfo_get_tried_bucket)
     std::vector<bool> asmap = FromBytes(test::data::asmap);
     NetGroupManager ngm_asmap{asmap};
 
-    CAddress addr1 = CAddress(ResolveService("250.1.1.1", 11965), NODE_NONE);
+    CAddress addr1 = CAddress(ResolveService("250.1.1.1", 11865), NODE_NONE);
     CAddress addr2 = CAddress(ResolveService("250.1.1.1", 9999), NODE_NONE);
 
     CNetAddr source1 = ResolveIP("250.1.1.1");
@@ -639,7 +639,7 @@ BOOST_AUTO_TEST_CASE(caddrinfo_get_new_bucket)
     std::vector<bool> asmap = FromBytes(test::data::asmap);
     NetGroupManager ngm_asmap{asmap};
 
-    CAddress addr1 = CAddress(ResolveService("250.1.2.1", 11965), NODE_NONE);
+    CAddress addr1 = CAddress(ResolveService("250.1.2.1", 11865), NODE_NONE);
     CAddress addr2 = CAddress(ResolveService("250.1.2.1", 9999), NODE_NONE);
 
     CNetAddr source1 = ResolveIP("250.1.2.1");
@@ -978,7 +978,7 @@ BOOST_AUTO_TEST_CASE(load_addrman)
     AddrMan addrman{EMPTY_NETGROUPMAN, DETERMINISTIC, GetCheckRatio(m_node)};
 
     std::optional<CService> addr1, addr2, addr3, addr4;
-    addr1 = Lookup("250.7.1.1", 11965, false);
+    addr1 = Lookup("250.7.1.1", 11865, false);
     BOOST_CHECK(addr1.has_value());
     addr2 = Lookup("250.7.2.2", 9999, false);
     BOOST_CHECK(addr2.has_value());
@@ -990,7 +990,7 @@ BOOST_AUTO_TEST_CASE(load_addrman)
     BOOST_CHECK(!addr4.has_value());
 
     // Add three addresses to new table.
-    const std::optional<CService> source{Lookup("252.5.1.1", 11965, false)};
+    const std::optional<CService> source{Lookup("252.5.1.1", 11865, false)};
     BOOST_CHECK(source.has_value());
     std::vector<CAddress> addresses{CAddress(addr1.value(), NODE_NONE), CAddress(addr2.value(), NODE_NONE), CAddress(addr3.value(), NODE_NONE)};
     BOOST_CHECK(addrman.Add(addresses, source.value()));
@@ -1078,7 +1078,7 @@ BOOST_AUTO_TEST_CASE(addrman_update_address)
     // Tests updating nTime via Connected() and nServices via SetServices() and Add()
     auto addrman = std::make_unique<AddrMan>(EMPTY_NETGROUPMAN, DETERMINISTIC, GetCheckRatio(m_node));
     CNetAddr source{ResolveIP("252.2.2.2")};
-    CAddress addr{CAddress(ResolveService("250.1.1.1", 11965), NODE_NONE)};
+    CAddress addr{CAddress(ResolveService("250.1.1.1", 11865), NODE_NONE)};
 
     const auto start_time{Now<NodeSeconds>() - 10000s};
     addr.nTime = start_time;
@@ -1104,7 +1104,7 @@ BOOST_AUTO_TEST_CASE(addrman_update_address)
     BOOST_CHECK_EQUAL(vAddr2.at(0).nServices, NODE_NETWORK_LIMITED);
 
     // Updating an existing addr through Add() (used in gossip relay) can add additional services but can't remove existing ones.
-    CAddress addr_v2{CAddress(ResolveService("250.1.1.1", 11965), NODE_P2P_V2)};
+    CAddress addr_v2{CAddress(ResolveService("250.1.1.1", 11865), NODE_P2P_V2)};
     addr_v2.nTime = start_time;
     BOOST_CHECK(!addrman->Add({addr_v2}, source));
     std::vector<CAddress> vAddr3{addrman->GetAddr(/*max_addresses=*/0, /*max_pct=*/0, /*network=*/std::nullopt)};
@@ -1142,10 +1142,10 @@ BOOST_AUTO_TEST_CASE(addrman_size)
     BOOST_CHECK_EQUAL(addrman->Size(/*net=*/NET_IPV4, /*in_new=*/false), 0U);
 
     // add two ipv4 addresses, one to tried and new
-    const CAddress addr1{ResolveService("250.1.1.1", 11965), NODE_NONE};
+    const CAddress addr1{ResolveService("250.1.1.1", 11865), NODE_NONE};
     BOOST_CHECK(addrman->Add({addr1}, source));
     BOOST_CHECK(addrman->Good(addr1));
-    const CAddress addr2{ResolveService("250.1.1.2", 11965), NODE_NONE};
+    const CAddress addr2{ResolveService("250.1.1.2", 11865), NODE_NONE};
     BOOST_CHECK(addrman->Add({addr2}, source));
 
     BOOST_CHECK_EQUAL(addrman->Size(/*net=*/std::nullopt, /*in_new=*/std::nullopt), 2U);

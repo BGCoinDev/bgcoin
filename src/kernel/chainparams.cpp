@@ -101,10 +101,8 @@ public:
         consensus.SegwitHeight = 0;
         consensus.MinBIP9WarningHeight = 0;
         consensus.powLimit = uint256{"00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
-        consensus.nPowTargetTimespan = 60 * 60; // 1 hour
-
-        // Block time
-        consensus.nPowTargetSpacing = 2 * 60; // 2 minutes per block
+        consensus.nPowTargetTimespan = 60 * 60; // Difficulty adjustment: 1 hour
+        consensus.nPowTargetSpacing = 2 * 60; // Block time: 2 minutes per block
 
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.enforce_BIP94 = false;
@@ -134,7 +132,7 @@ public:
         pchMessageStart[1] = 0xbe;
         pchMessageStart[2] = 0xb4;
         pchMessageStart[3] = 0xd9;
-        nDefaultPort = 11965;
+        nDefaultPort = 11865;
         nPruneAfterHeight = 100000;
         m_assumed_blockchain_size = 5;
         m_assumed_chain_state_size = 5;
@@ -198,8 +196,8 @@ public:
         consensus.SegwitHeight = 834624; // 00000000002b980fcd729daaa248fd9316a5200e9b367f4ff2c42453e84201ca
         consensus.MinBIP9WarningHeight = 836640; // segwit activation height + miner confirmation window
         consensus.powLimit = uint256{"00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
-        consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
-        consensus.nPowTargetSpacing = 10 * 60;
+        consensus.nPowTargetTimespan = 60 * 60; // Difficulty adjustment: 1 hour
+        consensus.nPowTargetSpacing = 2 * 60;   // Block time: 2 minutes per block
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.enforce_BIP94 = false;
         consensus.fPowNoRetargeting = false;
@@ -223,7 +221,7 @@ public:
         pchMessageStart[1] = 0x11;
         pchMessageStart[2] = 0x09;
         pchMessageStart[3] = 0x07;
-        nDefaultPort = 21965;
+        nDefaultPort = 21865;
         nPruneAfterHeight = 1000;
         m_assumed_blockchain_size = 93;
         m_assumed_chain_state_size = 19;
@@ -289,8 +287,8 @@ public:
         consensus.SegwitHeight = 1;
         consensus.MinBIP9WarningHeight = 0;
         consensus.powLimit = uint256{"00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
-        consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
-        consensus.nPowTargetSpacing = 10 * 60;
+        consensus.nPowTargetTimespan = 60 * 60; // Difficulty adjustment: 1 hour
+        consensus.nPowTargetSpacing = 2 * 60;   // Block time: 2 minutes per block
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.enforce_BIP94 = true;
         consensus.fPowNoRetargeting = false;
@@ -314,7 +312,7 @@ public:
         pchMessageStart[1] = 0x16;
         pchMessageStart[2] = 0x3f;
         pchMessageStart[3] = 0x28;
-        nDefaultPort = 31965;
+        nDefaultPort = 31865;
         nPruneAfterHeight = 1000;
         m_assumed_blockchain_size = 1;
         m_assumed_chain_state_size = 0;
@@ -385,7 +383,7 @@ public:
             vSeeds.emplace_back("seed.signet.achownodes.xyz."); // Ava Chow, only supports x1, x5, x9, x49, x809, x849, xd, x400, x404, x408, x448, xc08, xc48, x40c
 
             // Hardcoded nodes can be removed once there are more DNS seeds
-            vSeeds.emplace_back("node4.blackgoldcoin.org:51965");
+            vSeeds.emplace_back("node4.blackgoldcoin.org:41865");
 
             consensus.nMinimumChainWork = uint256{"0000000000000000000000000000000000000000000000000000025dbd66e58f"};
             consensus.defaultAssumeValid = uint256{"0000014aad1d58dddcb964dd749b073374c6306e716b22f573a2efe68d414539"}; // 208800
@@ -425,8 +423,8 @@ public:
         consensus.BIP66Height = 1;
         consensus.CSVHeight = 1;
         consensus.SegwitHeight = 1;
-        consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
-        consensus.nPowTargetSpacing = 10 * 60;
+        consensus.nPowTargetTimespan = 60 * 60; // Difficulty adjustment: 1 hour
+        consensus.nPowTargetSpacing = 2 * 60;   // Block time: 2 minutes per block
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.enforce_BIP94 = false;
         consensus.fPowNoRetargeting = false;
@@ -451,7 +449,7 @@ public:
         uint256 hash = h.GetHash();
         std::copy_n(hash.begin(), 4, pchMessageStart.begin());
 
-        nDefaultPort = 41965;
+        nDefaultPort = 41865;
         nPruneAfterHeight = 1000;
 
         genesis = CreateGenesisBlock(1735689600, 3874824, 0x1e0377ae, 1, 4 * COIN);
@@ -513,10 +511,8 @@ public:
         consensus.SegwitHeight = 0; // Always active unless overridden
         consensus.MinBIP9WarningHeight = 0;
         consensus.powLimit = uint256{"7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
-        consensus.nPowTargetTimespan = 60 * 60; // 1 hour
-
-        // Block time
-        consensus.nPowTargetSpacing = 2 * 60; // 2 minutes per block
+        consensus.nPowTargetTimespan = 60 * 60; // Difficulty adjustment: 1 hour
+        consensus.nPowTargetSpacing = 2 * 60;   // Block time: 2 minutes per block
 
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.enforce_BIP94 = true;
@@ -541,7 +537,7 @@ public:
         pchMessageStart[1] = 0xbf;
         pchMessageStart[2] = 0xb5;
         pchMessageStart[3] = 0xda;
-        nDefaultPort = 51965;
+        nDefaultPort = 51865;
         nPruneAfterHeight = opts.fastprune ? 100 : 1000;
         m_assumed_blockchain_size = 0;
         m_assumed_chain_state_size = 0;

@@ -83,7 +83,7 @@ For instance:
 
     $ bgcoind -zmqpubhashtx=tcp://127.0.0.1:28332 \
                -zmqpubhashtx=tcp://192.168.1.2:28332 \
-               -zmqpubhashblock="tcp://[::1]:21965" \
+               -zmqpubhashblock="tcp://[::1]:21865" \
                -zmqpubrawtx=ipc:///tmp/bgcoind.tx.raw \
                -zmqpubhashtxhwm=10000
 
