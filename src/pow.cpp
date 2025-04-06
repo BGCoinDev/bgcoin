@@ -17,7 +17,9 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
     unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
 
     if (pindexLast->nHeight >= params.lwmaForkHeight) {
+
         return LwmaCalculateNextWorkRequired(pindexLast, params);
+
     } else {
 
         // Only change once per difficulty adjustment interval
@@ -170,7 +172,7 @@ bool CheckProofOfWorkImpl(uint256 hash, unsigned int nBits, const Consensus::Par
 unsigned int LwmaCalculateNextWorkRequired(const CBlockIndex* pindexLast, const Consensus::Params& params)
 {
     const int64_t T = params.nPowTargetSpacing;
-    const int64_t N = 116;
+    const int64_t N = 60;
     const int64_t k = N * (N + 1) * T / 2;
     const int64_t height = pindexLast->nHeight;
     const arith_uint256 powLimit = UintToArith256(params.powLimit);
@@ -193,7 +195,7 @@ unsigned int LwmaCalculateNextWorkRequired(const CBlockIndex* pindexLast, const 
                             block->GetBlockTime() :
                             previousTimestamp + 1;
 
-        int64_t solvetime = std::min(6 * T, thisTimestamp - previousTimestamp);
+        int64_t solvetime = std::min(3 * T, thisTimestamp - previousTimestamp);
         previousTimestamp = thisTimestamp;
 
         j++;
