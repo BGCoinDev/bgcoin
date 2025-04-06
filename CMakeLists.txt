@@ -1,4 +1,5 @@
 # Copyright (c) 2023-present The Bitcoin Core developers
+# Copyright (c) 2024-present The BGCoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit/.
 
@@ -17,7 +18,7 @@ endif()
 # Project / Package metadata
 #=============================
 set(PACKAGE_NAME "Black Gold Coin")
-set(CLIENT_VERSION_MAJOR 1)
+set(CLIENT_VERSION_MAJOR 2)
 set(CLIENT_VERSION_MINOR 0)
 set(CLIENT_VERSION_BUILD 0)
 set(CLIENT_VERSION_RC 0)

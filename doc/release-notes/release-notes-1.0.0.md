@@ -1,6 +1,6 @@
-Black Gold Coin version 1.0 is now available from:
+Black Gold Coin version 1.0.0 is now available from:
 
-  <https://blackgoldcoin.org/bin/bgcoin-core-28.0/>
+  <https://blackgoldcoin.org/Home/Download>
 
 This release includes new features, various bug fixes and performance
 improvements, as well as updated translations.

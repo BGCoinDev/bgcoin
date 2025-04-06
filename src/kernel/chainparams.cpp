@@ -109,6 +109,7 @@ public:
         consensus.fPowNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 1815; // 90% of 2016
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
+        consensus.lwmaForkHeight = 42760;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = Consensus::BIP9Deployment::NEVER_ACTIVE;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
@@ -161,6 +162,13 @@ public:
         checkpointData = {
             {
                 {0, uint256{"00000000381e837dc6c6677766df09bb664896af77df2359702d8e7ee5251b2b"}},
+                {1, uint256{"0000000000bee7be2790bc2a4768af052b4bf7beabd0f725a510e5577d2456b2"}},
+                {100, uint256{"000000000149ff5c437fa93f8bbc10b035a21e133d8a79f5bccc180485bca1ae"}},
+                {1000, uint256{"00000000000000d1de95c4de38a22e1c877315b4ee2269f2e168762098d2553a"}},
+                {7258, uint256{"0000000000000021e0709f00a619dbaccd283a9ba0ad0b72f5fa0039af0e470f"}},
+                {18921, uint256{"00000000000000075a5c6aa6a02c90d5625ac7e9cc2a13aff62ffe894e2a025d"}},
+                {32755, uint256{"00000000000000124647ca67c1436c4f56d7e31c2029d2a5826bf6d714066d4b"}},
+                {42588, uint256{"0000000000000029390ae4b696f2d42d6352b2afb7fdb12247a09f3b5ff1ec3f"}},
             }
         };
 
