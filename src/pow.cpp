@@ -171,44 +171,62 @@ bool CheckProofOfWorkImpl(uint256 hash, unsigned int nBits, const Consensus::Par
 
 unsigned int LwmaCalculateNextWorkRequired(const CBlockIndex* pindexLast, const Consensus::Params& params)
 {
-    const int64_t T = params.nPowTargetSpacing;
-    const int64_t N = 60;
+    const int64_t T = params.nPowTargetSpacing; // Target block time in seconds (2 minutes)
+    const int64_t N = 180;                      // Number of blocks in the window for difficulty adjustment
     const int64_t k = N * (N + 1) * T / 2;
     const int64_t height = pindexLast->nHeight;
     const arith_uint256 powLimit = UintToArith256(params.powLimit);
 
+    // If the height is less than N, we haven't had enough blocks to adjust the difficulty
     if (height < N) {
         return powLimit.GetCompact();
     }
 
-    arith_uint256 sumTarget, nextTarget;
+    arith_uint256 sumTarget, nextTarget, lastTarget;
     int64_t thisTimestamp, previousTimestamp;
     int64_t t = 0, j = 0;
 
+    // Get the timestamp of the block N steps back
     const CBlockIndex* blockPreviousTimestamp = pindexLast->GetAncestor(height - N);
     previousTimestamp = blockPreviousTimestamp->GetBlockTime();
 
-    // Loop through N most recent blocks.
+    // Loop through the N most recent blocks to calculate difficulty
     for (int64_t i = height - N + 1; i <= height; i++) {
         const CBlockIndex* block = pindexLast->GetAncestor(i);
-        thisTimestamp = (block->GetBlockTime() > previousTimestamp) ?
-                            block->GetBlockTime() :
-                            previousTimestamp + 1;
+        thisTimestamp = std::max(block->GetBlockTime(), previousTimestamp + 1); // Avoid invalid timestamps
 
-        int64_t solvetime = std::min(3 * T, thisTimestamp - previousTimestamp);
+        int64_t solvetime = thisTimestamp - previousTimestamp;
+
+        // Clamp the solve time to avoid blocks being too fast (less than T/6) or too slow (more than 6*T)
+        if (solvetime < T / 6) solvetime = T / 6; // Avoid overly fast blocks
+        if (solvetime > 6 * T) solvetime = 6 * T; // Avoid overly slow blocks
+
         previousTimestamp = thisTimestamp;
-
         j++;
-        t += solvetime * j; // Weighted solvetime sum.
+
+        t += solvetime * j;
+
+        // Get the target for this block and add it to the sum
         arith_uint256 target;
         target.SetCompact(block->nBits);
         sumTarget += target / (k * N);
     }
+
+    // Calculate the next target using the weighted sum
     nextTarget = t * sumTarget;
 
+    // Save the last target for limiting rapid difficulty increases
+    lastTarget.SetCompact(pindexLast->nBits);
+
+    // Limit the difficulty increase to a maximum of x2.5 per adjustment cycle
+    if (nextTarget < lastTarget / 2.5)
+        nextTarget = lastTarget / 2.5;
+
+    // Apply the maximum difficulty limit
     if (nextTarget > powLimit) {
         nextTarget = powLimit;
     }
 
+    // Return the next target difficulty in compact form
     return nextTarget.GetCompact();
 }
