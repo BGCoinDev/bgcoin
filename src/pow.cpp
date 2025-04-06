@@ -16,7 +16,7 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
     assert(pindexLast != nullptr);
     unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
 
-    if (pindexLast->nHeight >= params.lwmaForkHeight) {
+    if (static_cast<uint32_t>(pindexLast->nHeight) >= params.lwmaForkHeight) {
 
         return LwmaCalculateNextWorkRequired(pindexLast, params);
 
