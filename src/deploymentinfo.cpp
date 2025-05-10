@@ -14,8 +14,16 @@ const struct VBDeploymentInfo VersionBitsDeploymentInfo[Consensus::MAX_VERSION_B
         /*.gbt_force =*/ true,
     },
     {
-        /*.name =*/ "taproot",
-        /*.gbt_force =*/ true,
+        /*.name =*/ "cons",
+        /*.gbt_force =*/true,
+    },
+    {
+        /*.name =*/"lwma",
+        /*.gbt_force =*/true,
+    },
+    {
+        /*.name =*/"taproot",
+        /*.gbt_force =*/true,
     },
 };
 
@@ -33,6 +41,10 @@ std::string DeploymentName(Consensus::BuriedDeployment dep)
         return "csv";
     case Consensus::DEPLOYMENT_SEGWIT:
         return "segwit";
+    case Consensus::DEPLOYMENT_LWMA:
+        return "lwma";
+    case Consensus::DEPLOYMENT_CONS:
+        return "cons";
     } // no default case, so the compiler can warn about missing cases
     return "";
 }

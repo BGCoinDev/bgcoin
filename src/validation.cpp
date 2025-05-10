@@ -2997,12 +2997,14 @@ void Chainstate::UpdateTip(const CBlockIndex* pindexNew)
     }
 
     std::vector<bilingual_str> warning_messages;
+    const std::set<int> known_custom_bits = {2, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28}; // CONS and LWMA
     if (!m_chainman.IsInitialBlockDownload()) {
         const CBlockIndex* pindex = pindexNew;
         for (int bit = 0; bit < VERSIONBITS_NUM_BITS; bit++) {
             WarningBitsConditionChecker checker(m_chainman, bit);
             ThresholdState state = checker.GetStateFor(pindex, params.GetConsensus(), m_chainman.m_warningcache.at(bit));
-            if (state == ThresholdState::ACTIVE || state == ThresholdState::LOCKED_IN) {
+            if ((state == ThresholdState::ACTIVE || state == ThresholdState::LOCKED_IN) && known_custom_bits.count(bit) == 0)
+            {
                 const bilingual_str warning = strprintf(_("Unknown new rules activated (versionbit %i)"), bit);
                 if (state == ThresholdState::ACTIVE) {
                     m_chainman.GetNotifications().warningSet(kernel::Warning::UNKNOWN_NEW_RULES_ACTIVATED, warning);
